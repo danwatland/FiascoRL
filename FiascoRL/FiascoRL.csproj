@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CA969656-63BF-49D5-AABC-CBC1274B906E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FiascoRL</RootNamespace>
+    <AssemblyName>FiascoRL</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>9db00cdb</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\WindowsGL\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\WindowsGL\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Combat\Skills\AbstractSkill.cs" />
+    <Compile Include="Combat\Skills\Spell.cs" />
+    <Compile Include="Display\Animation\Animation.cs" />
+    <Compile Include="Display\Animation\Frame.cs" />
+    <Compile Include="Display\Animation\StaticAnimations.cs" />
+    <Compile Include="Display\Animation\TextAnimation.cs" />
+    <Compile Include="Display\Camera2D.cs" />
+    <Compile Include="Display\DrawingManager.cs" />
+    <Compile Include="Display\SpriteGraphic.cs" />
+    <Compile Include="Display\UI\Controls\RaisedButtonControl.cs" />
+    <Compile Include="Display\UI\Controls\WindowButtonControl.cs" />
+    <Compile Include="Display\UI\Controls\CharacterSelectControl.cs" />
+    <Compile Include="Display\UI\Controls\Control.cs" />
+    <Compile Include="Display\UI\Controls\Coordinates\RelativeRectangle.cs" />
+    <Compile Include="Display\UI\Controls\Coordinates\RelativeVector.cs" />
+    <Compile Include="Display\UI\Controls\HoverableIconControl.cs" />
+    <Compile Include="Display\UI\Controls\Interfaces\IButtonHandler.cs" />
+    <Compile Include="Display\UI\Controls\Interfaces\IHoverableIconHandler.cs" />
+    <Compile Include="Display\UI\Controls\InventoryControl.cs" />
+    <Compile Include="Display\UI\Controls\MinimapControl.cs" />
+    <Compile Include="Display\UI\Controls\PowerBarControl.cs" />
+    <Compile Include="Display\UI\Controls\TitleBarControl.cs" />
+    <Compile Include="Display\UI\Controls\WindowControl.cs" />
+    <Compile Include="Display\UI\MessageLog.cs" />
+    <Compile Include="Display\UI\UIGraphic.cs" />
+    <Compile Include="Display\UI\UIManager.cs" />
+    <Compile Include="Entities\Actor.cs" />
+    <Compile Include="Entities\ArtificialIntelligence\AI.cs" />
+    <Compile Include="Entities\ArtificialIntelligence\BasicAI.cs" />
+    <Compile Include="Entities\Creature.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Equippable.cs" />
+    <Compile Include="Entities\Item.cs" />
+    <Compile Include="Entities\Player.cs" />
+    <Compile Include="Entities\Util\CreatureType.cs" />
+    <Compile Include="Entities\Util\EquippedItems.cs" />
+    <Compile Include="Entities\Util\ItemType.cs" />
+    <Compile Include="Entities\Util\ObjectType.cs" />
+    <Compile Include="Entities\Util\Stat.cs" />
+    <Compile Include="Etc\ExtensionMethods\Extensions.cs" />
+    <Compile Include="Etc\GameState\CharacterSelectGameState.cs" />
+    <Compile Include="Etc\GameState\GameStateManager.cs" />
+    <Compile Include="Etc\GameState\IGameState.cs" />
+    <Compile Include="Etc\GameState\MainGameState.cs" />
+    <Compile Include="Etc\LOS.cs" />
+    <Compile Include="Etc\MonogameExtensions.cs" />
+    <Compile Include="Etc\Targeting\Target.cs" />
+    <Compile Include="Etc\WeightedRandom\ObjectLists.cs" />
+    <Compile Include="Etc\WeightedRandom\RandomGenerator.cs" />
+    <Compile Include="Etc\WeightedRandom\WeightedRandom.cs" />
+    <Compile Include="FiascoGame.cs" />
+    <Compile Include="Input\InputHandler.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="World\Cave.cs" />
+    <Compile Include="World\Dungeon.cs" />
+    <Compile Include="World\Level.cs" />
+    <Compile Include="World\Staircase.cs" />
+    <Compile Include="World\Tile.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK">
+      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Tao.Sdl">
+      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\Tao.Sdl.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\oryx_16bit_background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\oryx_16bit_background_trans.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\oryx_16bit_fantasy.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\oryx_16bit_fantasy_classes.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\oryx_16bit_fantasy_classes_trans.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\oryx_16bit_fantasy_creatures.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\oryx_16bit_fantasy_creatures_trans.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\oryx_16bit_fantasy_fx.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\oryx_16bit_fantasy_fx_trans.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\oryx_16bit_fantasy_items.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\oryx_16bit_fantasy_items_trans.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\oryx_16bit_fantasy_tiles.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\oryx_16bit_fantasy_world.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\oryx_16bit_fantasy_world_trans.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\oryx_16bit_mockup.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UI\mouse_pointer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\UI\ui.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\fiasco_font.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\fiasco_font_small.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\MonoGame.Binaries.3.2.0\build\net40\MonoGame.Binaries.targets" Condition="Exists('..\packages\MonoGame.Binaries.3.2.0\build\net40\MonoGame.Binaries.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MonoGame.Binaries.3.2.0\build\net40\MonoGame.Binaries.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MonoGame.Binaries.3.2.0\build\net40\MonoGame.Binaries.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
