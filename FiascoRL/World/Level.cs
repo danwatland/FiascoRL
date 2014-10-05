@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using FiascoRL.Entities;
 using FiascoRL.Entities.Util;
 using FiascoRL.Etc.WeightedRandom;
 using FiascoRL.World;
 using FiascoRL.Display;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace FiascoRL.World
 {
-
     public abstract class Level
     {
         /// <summary>
@@ -73,22 +72,7 @@ namespace FiascoRL.World
         /// <summary>
         /// All actors currently on this level.
         /// </summary>
-        public List<Actor> ActorList
-        {
-            get
-            {
-                if (_actorList == null)
-                {
-                    _actorList = new List<Actor>();
-                }
-                return _actorList;
-            }
-            set
-            {
-                _actorList = value;
-            }
-        } 
-        private List<Actor> _actorList;
+        public List<Actor> ActorList { get; set; }
 
         /// <summary>
         /// Texture file to be loaded for this level.
@@ -98,25 +82,25 @@ namespace FiascoRL.World
         /// <summary>
         /// Variable containing index of the graphic needed.
         /// </summary>
-        public int FloorA = 3,
-                   Wall = 9,
-                   StaircaseDown = 8,
-                   StaircaseUp = 7,
-                   E_Wall = 10,
-                   EW_Wall = 11,
-                   W_Wall = 12,
-                   S_Wall = 13,
-                   NS_Wall = 14,
-                   N_Wall = 15,
-                   SE_Wall = 16,
-                   SW_Wall = 17,
-                   NE_Wall = 18,
-                   NW_Wall = 19,
-                   NWSE_Wall = 20,
-                   WSE_Wall = 21,
-                   NWS_Wall = 22,
-                   NES_Wall = 23,
-                   NWE_Wall = 24;
+        public int Floor = 3,
+                         Wall = 9,
+                         StaircaseDown = 8,
+                         StaircaseUp = 7,
+                         E_Wall = 10,
+                         EW_Wall = 11,
+                         W_Wall = 12,
+                         S_Wall = 13,
+                         NS_Wall = 14,
+                         N_Wall = 15,
+                         SE_Wall = 16,
+                         SW_Wall = 17,
+                         NE_Wall = 18,
+                         NW_Wall = 19,
+                         NWSE_Wall = 20,
+                         WSE_Wall = 21,
+                         NWS_Wall = 22,
+                         NES_Wall = 23,
+                         NWE_Wall = 24;
 
         /// <summary>
         /// Random number generator.
@@ -155,17 +139,8 @@ namespace FiascoRL.World
             int[] xArr = { x - 1, x, x + 1, x + 1, x + 1, x, x - 1, x - 1 };
             int[] yArr = { y - 1, y - 1, y - 1, y, y + 1, y + 1, y + 1, y };
 
-            int count = 0;
-            for (int i = 0; i < xArr.Length; i++)
-            {
-                if (xArr[i] >= 0 && xArr[i] < this.Width && yArr[i] >= 0 && yArr[i] < this.Height)
-                {
-                    if (TileMap[xArr[i], yArr[i]].Traversable == false)
-                        count++;
-                }
-            }
-
-            return count;
+            return xArr.Where((t, i) => t >= 0 && t < this.Width && yArr[i] >= 0 && 
+                   yArr[i] < this.Height && TileMap[t, yArr[i]].Traversable == false).Count();
         }
 
         /// <summary>
@@ -174,7 +149,7 @@ namespace FiascoRL.World
         /// <returns>Random traversable tile.</returns>
         public Point GetRandomOpenTile()
         {
-            List<Point> pointList = new List<Point>();
+            var pointList = new List<Point>();
             var creatureCoords = ActorList.Where(x => x.GetType() == typeof(Creature)).Select(x => x.Coords);
             for (int x = 0; x < Width; x++)
             {
@@ -182,7 +157,7 @@ namespace FiascoRL.World
                 {
                     if (TileMap[x, y].Traversable)
                     {
-                        Point p = new Point(x, y);
+                        var p = new Point(x, y);
 
                         if (!creatureCoords.Contains(p))
                         {
@@ -191,7 +166,6 @@ namespace FiascoRL.World
                     }
                 }
             }
-
             return pointList[Rand.Next(pointList.Count)];
         }
 
@@ -204,7 +178,7 @@ namespace FiascoRL.World
         {
             var result = ActorList.Where(x => x.GetType() == typeof(Creature) && x.Coords == p);
 
-            if (result.Count() > 0)
+            if (result.Any())
             {
                 return result.Cast<Creature>().First();
             }
@@ -223,7 +197,7 @@ namespace FiascoRL.World
         {
             var result = ActorList.Where(x => x.GetType() == typeof(Item) && x.Coords == p);
 
-            if (result.Count() > 0)
+            if (result.Any())
             {
                 return result.Cast<Item>().ToList();
             }
@@ -244,9 +218,9 @@ namespace FiascoRL.World
             int graphicIndex = (direction == Staircase.StairType.Down) ? StaircaseDown : StaircaseUp;
 
             _accessibleArea = new List<Point>();
-            List<Point> points = GetAccessibleArea(point);
+            var points = GetAccessibleArea(point);
 
-            Point stairCoord = points[Rand.Next(points.Count)];
+            var stairCoord = points[Rand.Next(points.Count)];
             DecorationMap[stairCoord.X, stairCoord.Y] = new Staircase(graphicIndex)
             {
                 Coords = stairCoord,
@@ -267,7 +241,7 @@ namespace FiascoRL.World
             for (int i = 0; i < baseCreatures + additionalCreatures; i++)
             {
                 WeightedRandom wr = RandomGenerator.Generate(ObjectLists.MonsterList(), 1); // TODO: Make variable.
-                Creature c = Creature.GenerateCreature((CreatureType)wr.Type, this);
+                var c = Creature.GenerateCreature((CreatureType)wr.Type, this);
                 c.Coords = GetRandomOpenTile();
                 ActorList.Add(c);
 
@@ -284,7 +258,7 @@ namespace FiascoRL.World
             for (int i = 0; i < baseItems + additionalItems; i++)
             {
                 WeightedRandom wr = RandomGenerator.Generate(ObjectLists.ItemList(), 1);
-                Item item = Item.GenerateItem((ItemType)wr.Type);
+                var item = Item.GenerateItem((ItemType)wr.Type);
                 item.CurrentLevel = this;
                 item.Coords = GetRandomOpenTile();
                 ActorList.Add(item);
@@ -314,13 +288,13 @@ namespace FiascoRL.World
         /// </summary>
         public void ProcessCreatureTurns()
         {
-            ActorList.Where(c => typeof(Creature).IsAssignableFrom(c.GetType()))
+            ActorList.Where(c => c is Creature)
                 .Cast<Creature>()
                 .ToList()
                 .ForEach(c => c.ProcessTurn());
 
             // Remove creatures with no health.
-            ActorList.Where(c => c.GetType() == typeof(Creature) && ((Creature)c).HP.Current <= 0)
+            ActorList.Where(c => c is Creature && ((Creature)c).HP.Current <= 0)
                 .Cast<Creature>()
                 .Select(i => new Tuple<Creature, Item>(i, i.GetItems().FirstOrDefault()))
                 .ToList()
@@ -329,7 +303,7 @@ namespace FiascoRL.World
                     ActorList.Add(c.Item2);
                 });
 
-            ActorList = ActorList.Where(c => (c.GetType() == typeof(Creature) && ((Creature)c).HP.Current > 0)
+            ActorList = ActorList.Where(c => c is Creature && ((Creature)c).HP.Current > 0
                 || c.GetType() != typeof(Creature))
                 .ToList();
         }
@@ -347,7 +321,7 @@ namespace FiascoRL.World
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    List<Tile> surroundingTiles = new List<Tile>();
+                    var surroundingTiles = new List<Tile>();
                     for (int i = 0; i < xArr.Length; i++)
                     {
                         if (x + xArr[i] >= 0 && x + xArr[i] < Width && y + yArr[i] >= 0 && y + yArr[i] < Height)
@@ -366,66 +340,39 @@ namespace FiascoRL.World
                                                 .Select(i => i.Index).ToArray();
                     if (!TileMap[x, y].Traversable && walls.Length > 0 && walls.Length < 8)
                     {
+                        int wallIndex = Wall;
                         if (!(new int[] { 0, 2, 4, 6 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = NWSE_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = NWSE_Wall;
                         else if (!(new int[] { 0, 2, 4 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = NES_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = NES_Wall;
                         else if (!(new int[] { 0, 2, 6 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = NWE_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = NWE_Wall;
                         else if (!(new int[] { 0, 4, 6 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = NWS_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = NWS_Wall;
                         else if (!(new int[] { 2, 4, 6 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = WSE_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = WSE_Wall;
                         else if (!(new int[] { 0, 2 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = NE_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = NE_Wall;
                         else if (!(new int[] { 0, 4 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = NS_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = NS_Wall;
                         else if (!(new int[] { 0, 6 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = NW_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = NW_Wall;
                         else if (!(new int[] { 2, 6 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = EW_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = EW_Wall;
                         else if (!(new int[] { 2, 4 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = SE_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = SE_Wall;
                         else if (!(new int[] { 4, 6 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = SW_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = SW_Wall;
                         else if (!(new int[] { 0 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = N_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = N_Wall;
                         else if (!(new int[] { 2 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = E_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = E_Wall;
                         else if (!(new int[] { 4 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = S_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = S_Wall;
                         else if (!(new int[] { 6 }).Except(walls).Any())
-                        {
-                            TileMap[x, y].GraphicIndex = W_Wall + LevelType * TilesetColumns;
-                        }
+                            wallIndex = W_Wall;
+
+                        TileMap[x, y].GraphicIndex = wallIndex + LevelType * TilesetColumns;
                     }
                 }
             }
@@ -457,7 +404,7 @@ namespace FiascoRL.World
         {
             foreach (var point in _surr)
             {
-                Point pointToCheck = new Point(p.X + point.X, p.Y + point.Y);
+                var pointToCheck = new Point(p.X + point.X, p.Y + point.Y);
                 if (!_accessibleArea.Contains(pointToCheck) && 
                     TileMap[pointToCheck.X, pointToCheck.Y].Traversable)
                 {

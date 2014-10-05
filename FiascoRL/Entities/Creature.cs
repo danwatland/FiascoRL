@@ -81,11 +81,11 @@ namespace FiascoRL.Entities
             }
             if (args.OldItems != null)
             {
-                ModifyEquippables(args.NewItems.Cast<Equippable>().ToList(), true);
+                ModifyEquippables(args.OldItems.Cast<Equippable>().ToList(), true);
             }
         }
 
-        private void ModifyEquippables(List<Equippable> items, bool subtract = false)
+        private void ModifyEquippables(IEnumerable<Equippable> items, bool subtract = false)
         {
             int sign = subtract ? -1 : 1;
             foreach (var item in items)
@@ -102,8 +102,8 @@ namespace FiascoRL.Entities
                         if (x.GetValue(this, null) != null)
                         {
                             ((Stat)x.GetValue(this, null)).Additional +=
-                                (itemStats.Where(t => t.Name == x.Name).Any()) ?
-                                sign * itemStats.Where(t => t.Name == x.Name).First().Stat :
+                                (itemStats.Any(t => t.Name == x.Name)) ?
+                                sign * itemStats.First(t => t.Name == x.Name).Stat :
                                 0;
                         }
                     });
@@ -124,7 +124,7 @@ namespace FiascoRL.Entities
         /// <returns>New creature of the given CreatureType.</returns>
         public static Creature GenerateCreature(CreatureType type, Level level)
         {
-            Creature c = new Creature(SpriteGraphic.Creatures, type.GraphicIndex)
+            var c = new Creature(SpriteGraphic.Creatures, type.GraphicIndex)
             {
                 Name = type.Name,
                 HP = new Stat(type.HP, type.HP),
@@ -134,7 +134,7 @@ namespace FiascoRL.Entities
             };
             c.ai = (AI)Activator.CreateInstance(type.AIClass, c);
             WeightedRandom wr = RandomGenerator.Generate(ObjectLists.ItemList(), level.Depth);
-            Item item = Item.GenerateItem((ItemType)wr.Type);
+            var item = Item.GenerateItem((ItemType)wr.Type);
             c.Items.Add(item);
             return c;
         }
@@ -153,12 +153,6 @@ namespace FiascoRL.Entities
             };
             anim.SetColors(Color.Red);
             anim.AddLinearFade();
-
-//            for (int i = 0; i < 8; i++)
-//            {
-//                anim.Colors.Add(new Microsoft.Xna.Framework.Color(1.0f, 0.0f, 0.0f, (float)(1.0 - 0.125 * i)));
-//            }
-
             return anim;
         }
 
@@ -217,7 +211,7 @@ namespace FiascoRL.Entities
         {
             if (Items.Contains(item))
             {
-                Items.Where(x => x.Equals(item)).First().Quantity += item.Quantity;
+                Items.First(x => x.Equals(item)).Quantity += item.Quantity;
             }
         }
 
