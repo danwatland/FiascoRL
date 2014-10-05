@@ -10,26 +10,37 @@ namespace FiascoRL.Display.Animation
 {
     public class Animation : ICloneable
     {
-        private Entity entity;
-
-        /// <summary>
-        /// Create an animation tied to a particular entity.
-        /// </summary>
-        /// <param name="e">Entity to tie animation to.</param>
-        public Animation(Entity e) : this()
-        {
-            this.entity = e;
-            this.GraphicIndex = e.GraphicIndex;
-        }
+        private readonly Entity _entity;
 
         /// <summary>
         /// Creates a new stand-alone animation.
         /// </summary>
-        public Animation()
+        private Animation()
         {
-            this.Colors = new List<Color>();
-            this.Frames = new List<int>();
+            this.Frames = new List<Frame>();
             this.Offset = new Point(0, 0);
+        }
+
+        /// <summary>
+        /// Creates a new animation with the specified number of frames.
+        /// </summary>
+        /// <param name="frames">Number of frames.</param>
+        public Animation(int frames) : this()
+        {
+            Frames = (new Frame()).CreateClonedEnumerable(frames).ToList();
+            _currentFrame = Frames[0];
+        }
+
+        /// <summary>
+        /// Creates an animation tied to a particular entity that lasts for the specified number of frames.
+        /// </summary>
+        /// <param name="e">Entity to tie animation to.</param>
+        /// <param name="frames">Number of frames.</param>
+        public Animation(Entity e, int frames) : this()
+        {
+            this._entity = e;
+            Frames = (new Frame()).CreateClonedEnumerable(frames).ToList();
+            _currentFrame = Frames[0];
         }
 
         /// <summary>
@@ -45,18 +56,36 @@ namespace FiascoRL.Display.Animation
         /// <summary>
         /// Index this entity uses from its spritesheet.
         /// </summary>
-        public int GraphicIndex { get { if (entity != null && entity.GetType().IsSubclassOf(typeof(Actor))) { return ((Creature)entity).GraphicIndex; } 
-                                        else { return _graphicIndex; } } set { _graphicIndex = value; } }
-
-        private int _graphicIndex;
+        public int GraphicIndex
+        {
+            get
+            {
+                if (_entity == null)
+                    return Frames.Any() ? _currentFrame.GraphicIndex : 0;
+                else
+                    return _entity.GraphicIndex;
+            }
+        }
 
         /// <summary>
         /// Returns coordinates of either the entity tied to this animation 
         /// (if an entity is tied to it) or the animation itself.
         /// </summary>
-        public Point Coords { get { if (entity != null && entity.GetType().IsSubclassOf(typeof(Actor))) { return ((Creature)entity).Coords; } 
-                                    else { return _coords; } } set { _coords = value; } }
+        public Point Coords { 
+            get 
+            {
+                if (_entity != null && _entity.GetType().IsSubclassOf(typeof (Actor)))
+                {
+                    return ((Creature)_entity).Coords;
+                }
 
+                else
+                {
+                    return _coords;
+                } 
+            } 
+            set { _coords = value; } 
+        }
         private Point _coords;
 
         /// <summary>
@@ -67,17 +96,15 @@ namespace FiascoRL.Display.Animation
         /// <summary>
         /// List representing all frames for this entity's animation.
         /// </summary>
-        public List<Int32> Frames { get; set; }
-
-        /// <summary>
-        /// List of colors to draw this animation.
-        /// </summary>
-        public List<Color> Colors { get; set; }
+        public List<Frame> Frames { get; set; }
 
         /// <summary>
         /// Color of the frame being shown.
         /// </summary>
-        public Color CurrentColor { get; set; }
+        public Color CurrentColor
+        {
+            get { return _currentFrame.Color; }
+        }
 
         /// <summary>
         /// Length of each frame in this entity's animation.
@@ -87,17 +114,12 @@ namespace FiascoRL.Display.Animation
         /// <summary>
         /// Elapsed time since this entity has updated.
         /// </summary>
-        private float _frameTimer { get; set; }
+        protected float _frameTimer { get; set; }
 
         /// <summary>
         /// Current frame this entity is displaying.
         /// </summary>
-        private int _currentFrame { get; set; }
-
-        /// <summary>
-        /// Current color frame this entity is displaying.
-        /// </summary>
-        private int _currentColorFrame { get; set; }
+        protected Frame _currentFrame { get; set; }
 
         /// <summary>
         /// Whether or not this entity's animation is completed.
@@ -111,20 +133,9 @@ namespace FiascoRL.Display.Animation
             if (_frameTimer > FrameLength)
             {
                 _frameTimer = 0.0f;
-                _currentFrame = (_currentFrame + 1) % Math.Max(Frames.Count, 1);
-                _currentColorFrame = (_currentColorFrame + 1) % Math.Max(Colors.Count, 1);
+                _currentFrame = Frames[(Frames.IndexOf(_currentFrame) + 1) % Math.Max(Frames.Count, 1)];
 
-                if (Colors.Count > 0)
-                {
-                    CurrentColor = Colors[_currentColorFrame];
-                }
-
-                if (Frames.Count > 0)
-                {
-                    GraphicIndex = Frames[_currentFrame];
-                }
-
-                if (((_currentFrame == 0 && Frames.Count > 0) || (_currentColorFrame == 0 && Colors.Count > 0)) && !Loop)
+                if ((_currentFrame.Equals(Frames[0]) && Frames.Count > 0) && !Loop)
                 {
                     Completed = true;
                 }
@@ -133,15 +144,13 @@ namespace FiascoRL.Display.Animation
 
         public object Clone()
         {
-            Animation clone = new Animation()
+            var clone = new Animation()
             {
-                Colors = new List<Color>(this.Colors.Select(x => x)),
-                Frames = new List<int>(this.Frames.Select(x => x)),
-                CurrentColor = this.CurrentColor,
+                Frames = new List<Frame>(this.Frames.Select(x => (Frame)x.Clone())),
+                _currentFrame = this._currentFrame,
                 Completed = this.Completed,
                 Coords = this.Coords,
                 FrameLength = this.FrameLength,
-                GraphicIndex = this.GraphicIndex,
                 Loop = this.Loop,
                 Offset = this.Offset,
                 Texture = this.Texture,

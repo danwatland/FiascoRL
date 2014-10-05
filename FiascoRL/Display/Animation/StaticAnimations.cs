@@ -1,4 +1,5 @@
-﻿using FiascoRL.Display.UI;
+﻿using System.Globalization;
+using FiascoRL.Display.UI;
 using FiascoRL.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,16 +12,17 @@ namespace FiascoRL.Display.Animation
 {
     public static class StaticAnimations
     {
-        public static TextAnimation DamageTextAnimation(Entity entity, int number) {
-            TextAnimation animation = new TextAnimation(entity)
+        public static TextAnimation DamageTextAnimation(Entity entity, int number) 
+        {
+            var animation = new TextAnimation(entity)
             {
                 FrameLength = 0.025f,
                 Loop = false,
-                Text = number.ToString(),
+                Text = number.ToString(CultureInfo.InvariantCulture),
                 Font = UIGraphic.FiascoFont,
             };
 
-            Vector2 offset = animation.Font.MeasureString(number.ToString());
+            var offset = animation.Font.MeasureString(number.ToString(CultureInfo.InvariantCulture));
             
             // Initial focus.
             for (int i = 6; i <= 16; i++)
@@ -29,7 +31,7 @@ namespace FiascoRL.Display.Animation
                 {
                     Color = Color.Red,
                     BorderColor = Color.White,
-                    Text = number.ToString(),
+                    Text = number.ToString(CultureInfo.InvariantCulture),
                     Offset = new Point((int)(12 - (offset.X / 2.0) * ((float)Math.Pow((i / 4.0) - 4, 2) + 1)),
                                        (int)(12 - (offset.Y / 2.0) * ((float)Math.Pow((i / 4.0) - 4, 2) + 1))),
                     Size = (float)Math.Pow((i / 4.0) - 4, 2) + 1,
@@ -43,7 +45,7 @@ namespace FiascoRL.Display.Animation
                 {
                     Color = new Color(1.0f, 0.0f, 0.0f, 1.0f - i * 0.1f),
                     BorderColor = new Color(1.0f, 1.0f, 1.0f, 1.0f - i * 0.1f),
-                    Text = number.ToString(),
+                    Text = number.ToString(CultureInfo.InvariantCulture),
                     Offset = new Point((int)(12 - offset.X / 2.0), (int)(12 - offset.Y / 2.0) - i * 1),
                     Size = 1.0f,
                 });

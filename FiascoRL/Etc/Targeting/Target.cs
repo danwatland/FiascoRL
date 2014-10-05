@@ -163,31 +163,29 @@ namespace FiascoRL.Etc.Targeting
             {
                 if (_targetAnimation == null)
                 {
-                    _targetAnimation = new Animation()
+                    _targetAnimation = new Animation(10)
                     {
                         FrameLength = 0.025f,
                         Loop = true,
-                        Frames = new List<int>(),
-                        Colors = new List<Color>(),
                         Texture = BlankTexture,
                     };
 
                     for (int i = 0; i < 10; i++)
                     {
-                        _targetAnimation.Frames.Add(0);
-                        _targetAnimation.Colors.Add(new Color(152 + i * 10, 155 + i * 10, 30 + i, 127));
+                        _targetAnimation.Frames[i].GraphicIndex = 0;
+                        _targetAnimation.Frames[i].Color = new Color(152 + i * 10, 155 + i * 10, 30 + i, 127);
                     }
                     for (int i = 0; i < 10; i++)
                     {
-                        _targetAnimation.Frames.Add(0);
-                        _targetAnimation.Colors.Add(new Color(252 - i * 10, 255 - i * 10, 40 - i, 127));
+                        _targetAnimation.Frames[i].GraphicIndex = 0;
+                        _targetAnimation.Frames[i].Color = new Color(252 - i * 10, 255 - i * 10, 40 - i, 127);
                     }
 
                 }
                 return _targetAnimation;
             }
         }
-        private Animation _targetAnimation { get; set; }
+        private Animation _targetAnimation;
 
         internal Animation AreaAnimation
         {
@@ -195,25 +193,23 @@ namespace FiascoRL.Etc.Targeting
             {
                 if (_areaAnimation == null)
                 {
-                    _areaAnimation = new Animation()
+                    _areaAnimation = new Animation(10)
                     {
                         FrameLength = 0.05f,
                         Loop = true,
-                        Frames = new List<int>(),
-                        Colors = new List<Color>(),
                         Texture = BlankTexture,
                     };
 
                     for (int i = 0; i < 10; i++)
                     {
-                        _areaAnimation.Frames.Add(0);
-                        _areaAnimation.Colors.Add(new Color(80 + i * 6, 80 + i * 6, 80 + i * 6, 127));
+                        _areaAnimation.Frames[i].GraphicIndex = 0;
+                        _areaAnimation.Frames[i].Color = new Color(80 + i * 6, 80 + i * 6, 80 + i * 6, 127);
                     }
 
                     for (int i = 0; i < 10; i++)
                     {
-                        _areaAnimation.Frames.Add(0);
-                        _areaAnimation.Colors.Add(new Color(140 - i * 6, 140 - i * 6, 140 - i * 6, 127));
+                        _areaAnimation.Frames[i].GraphicIndex = 0;
+                        _areaAnimation.Frames[i].Color = new Color(140 - i * 6, 140 - i * 6, 140 - i * 6, 127);
                     }
                 }
                 return _areaAnimation;

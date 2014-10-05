@@ -5,25 +5,17 @@ using System.IO;
 using System.Linq;
 using System.Resources;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using FiascoRL.Display;
-using FiascoRL.Display.Animation;
 using FiascoRL.Display.UI;
 using FiascoRL.Display.UI.Controls;
 using FiascoRL.Entities;
 using FiascoRL.Etc;
 using FiascoRL.Etc.WeightedRandom;
-using FiascoRL.Input;
 using FiascoRL.World;
-using FiascoRL.Etc.Targeting;
 using FiascoRL.Entities.Util;
 using FiascoRL.Display.UI.Controls.Coordinates;
-using FiascoRL.Etc.GameState;
 
 namespace FiascoRL
 {
@@ -32,18 +24,18 @@ namespace FiascoRL
     /// </summary>
     public class FiascoGame : Microsoft.Xna.Framework.Game
     {
-        public GraphicsDeviceManager graphics;
-        public Level firstLevel;
-        private Texture2D cursorTex;
-        private Vector2 cursorPos;
+        public GraphicsDeviceManager Graphics;
+        public Level FirstLevel;
+        private Texture2D _cursorTex;
+        private Vector2 _cursorPos;
 
         public FiascoGame()
         {
-            this.graphics = new GraphicsDeviceManager(this);
+            Graphics = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferHeight = 700;
-            graphics.PreferredBackBufferWidth = 1200;
+            Graphics.PreferredBackBufferHeight = 700;
+            Graphics.PreferredBackBufferWidth = 1200;
         }
 
         /// <summary>
@@ -61,27 +53,26 @@ namespace FiascoRL
 
             // Load textures into active content.
             SpriteGraphic.Initialize(this);
-            FiascoRL.Display.UI.UIGraphic.Initialize(this);
+            UIGraphic.Initialize(this);
 
             // Load first level.
-            firstLevel = new Cave(50, 50);
-            firstLevel.Depth = 1;
-            firstLevel.GenerateLevel();
+            FirstLevel = new Cave(50, 50) { Depth = 1 };
+            FirstLevel.GenerateLevel();
 
             // TODO: Remove this.
             Session.Player = new Player(SpriteGraphic.Creatures, 0)
             {
-                CurrentLevel = firstLevel,
+                CurrentLevel = FirstLevel,
                 HP = new Stat(20, 20),
                 SP = new Stat(10, 10),
-                Coords = firstLevel.GetRandomOpenTile(),
+                Coords = FirstLevel.GetRandomOpenTile(),
             };
-            firstLevel.ActorList.Add(Session.Player);
-            firstLevel.AddRandomAccessibleStaircase(Session.Player.Coords, Staircase.StairType.Down);
+            FirstLevel.ActorList.Add(Session.Player);
+            FirstLevel.AddRandomAccessibleStaircase(Session.Player.Coords, Staircase.StairType.Down);
 
             Session.Graphics = GraphicsDevice;
             
-            Session.MessageLog = new MessageLog(graphics);
+            Session.MessageLog = new MessageLog(Graphics);
             Session.Game = this;
             base.Initialize();
         }
@@ -95,14 +86,14 @@ namespace FiascoRL
             // Create a new SpriteBatch, which can be used to draw textures.
             Session.SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            cursorTex = Content.Load<Texture2D>("UI/mouse_pointer");
+            _cursorTex = Content.Load<Texture2D>("UI/mouse_pointer");
 
             // Load UI texture.
             Control.UITexture = Content.Load<Texture2D>("UI/ui");
-            Control.GraphicsDeviceManager = this.graphics;
+            Control.GraphicsDeviceManager = Graphics;
 
             // Set up UI.
-            var minimapControl = new MinimapControl() {Enabled = true};
+            var minimapControl = new MinimapControl() { Enabled = true };
             var healthBarControl = new PowerBarControl(PowerBarControl.BarColor.Red, Session.Player.HP, "HP") { Enabled = true };
             var powerBarControl = new PowerBarControl(PowerBarControl.BarColor.Blue, Session.Player.SP, "SP")
             {
@@ -127,7 +118,6 @@ namespace FiascoRL
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
         /// <summary>
@@ -145,7 +135,7 @@ namespace FiascoRL
 
             // Update mouse position.
             MouseState mouse = Mouse.GetState();
-            cursorPos = new Vector2(mouse.X, mouse.Y);
+            _cursorPos = new Vector2(mouse.X, mouse.Y);
         }
 
         /// <summary>
@@ -158,7 +148,7 @@ namespace FiascoRL
 
             // Draw mouse.
             Session.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, null);
-            Session.SpriteBatch.Draw(cursorTex, new Rectangle((int)cursorPos.X, (int)cursorPos.Y, cursorTex.Width * 2, cursorTex.Height * 2), Color.White);
+            Session.SpriteBatch.Draw(_cursorTex, new Rectangle((int)_cursorPos.X, (int)_cursorPos.Y, _cursorTex.Width * 2, _cursorTex.Height * 2), Color.White);
             Session.SpriteBatch.End();
 
             base.Draw(gameTime);

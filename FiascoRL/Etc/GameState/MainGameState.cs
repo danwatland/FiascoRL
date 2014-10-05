@@ -54,10 +54,12 @@ namespace FiascoRL.Etc.GameState
         public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             Session.Graphics.Clear(Color.Black);
-            Camera2D cam = new Camera2D();
-            cam.Zoom = 2f;
-            cam.Pos = new Vector2(Session.Player.Coords.X * 24, Session.Player.Coords.Y * 24); // Place on Session.Player's coordinates.
-            Matrix transformation = cam.get_transformation(Session.Graphics);
+            var cam = new Camera2D
+            {
+                Zoom = 2f,
+                Pos = new Vector2(Session.Player.Coords.X*24, Session.Player.Coords.Y*24)
+            };
+            var transformation = cam.get_transformation(Session.Graphics);
 
             DrawingManager.StoreVisibleTiles();
             DrawingManager.DrawTiles(gameTime, transformation);

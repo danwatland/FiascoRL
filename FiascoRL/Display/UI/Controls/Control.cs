@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -33,6 +34,7 @@ namespace FiascoRL.Display.UI.Controls
             catch (InvalidOperationException e)
             {
                 // Do nothing - SpriteBatch has already begun.
+                Debug.Print("Attempted to begin spritebatch that was already running. {0}", e.StackTrace);
             }
             if (!CenterBitmap.IsEmpty)
             {

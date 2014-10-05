@@ -17,34 +17,44 @@ namespace FiascoRL.Combat.Skills
         {
             Spell fireball = new Spell(performer, recipient) { Damage = 3, Name = "Fireball", SkillPoints = 2 };
             // Initial fireball.
-            Animation anim = new Animation()
+            var anim = new Animation(16)
             {
                 FrameLength = 0.02f,
                 Texture = SpriteGraphic.Effects32,
                 Coords = recipient.Coords,
-                Frames = (new int[] { 5, 5, 5, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 9, 9, 9 }).ToList(),
-                Colors = (new Color[] {Color.OrangeRed , Color.OrangeRed, Color.OrangeRed, Color.OrangeRed, Color.OrangeRed, 
-                    Color.OrangeRed, Color.OrangeRed, Color.OrangeRed, Color.OrangeRed, Color.OrangeRed, Color.OrangeRed, Color.OrangeRed,
-                    new Color(1.0f, 0.0f, 0.0f, 0.8f), new Color(1.0f, 0.0f, 0.0f, 0.6f),
-                    new Color(1.0f, 0.0f, 0.0f, 0.4f), new Color(1.0f, 0.0f, 0.0f, 0.2f)}).ToList(),
             };
-            // Explosion expanding...
-            Animation anim2 = new Animation()
-            {
-                FrameLength = 0.02f,
-                Texture = SpriteGraphic.Effects32,
-                Coords = recipient.Coords,
-                Frames = (new int[] { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 }).ToList(),
-                Colors = (new Color[] {Color.White, Color.White, Color.White, Color.White, Color.White, Color.White, 
-                    Color.White, Color.White, Color.White, Color.White, Color.Transparent, Color.Transparent,
-                    Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent}).ToList(),
-            };
+            anim.SetGraphicIndexes(new int[] { 5, 5, 5, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 9, 9, 9 });
+            anim.SetColors(Color.OrangeRed);
+            anim.AddLinearFade(12, 15);
+                //Colors = (new Color[] {Color.OrangeRed , Color.OrangeRed, Color.OrangeRed, Color.OrangeRed, Color.OrangeRed, 
+//                    Color.OrangeRed, Color.OrangeRed, Color.OrangeRed, Color.OrangeRed, Color.OrangeRed, Color.OrangeRed, Color.OrangeRed,
+//                    new Color(1.0f, 0.0f, 0.0f, 0.8f), new Color(1.0f, 0.0f, 0.0f, 0.6f),
+//                    new Color(1.0f, 0.0f, 0.0f, 0.4f), new Color(1.0f, 0.0f, 0.0f, 0.2f)}).ToList(),
 
-            Animation anim3 = (Animation)anim2.Clone();
-            anim3.Frames = (new int[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4 }).ToList();
-            anim3.Colors = (new Color[] {Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, 
-                Color.Transparent, Color.Transparent, Color.White, Color.White, Color.White, Color.White,
-                Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent}).ToList();
+
+            // Explosion expanding...
+            var anim2 = new Animation(16)
+            {
+                FrameLength = 0.02f,
+                Texture = SpriteGraphic.Effects32,
+                Coords = recipient.Coords,
+            };
+            anim2.SetGraphicIndexes(2);
+            anim2.SetColors(Color.White);
+            anim2.SetColors(Color.Transparent, 11, 15);
+//                Frames = (new int[] { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 }).ToList(),
+//                Colors = (new Color[] {Color.White, Color.White, Color.White, Color.White, Color.White, Color.White, 
+//                    Color.White, Color.White, Color.White, Color.White, Color.Transparent, Color.Transparent,
+//                    Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent}).ToList(),
+
+            var anim3 = (Animation)anim2.Clone();
+            anim3.SetGraphicIndexes(new int[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4 });
+            anim3.SetColors(Color.Transparent);
+            anim3.SetColors(Color.White, 6, 9);
+//            anim3.Frames = (new int[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4 }).ToList();
+//            anim3.Colors = (new Color[] {Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, 
+//                Color.Transparent, Color.Transparent, Color.White, Color.White, Color.White, Color.White,
+//                Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent}).ToList();
 
             fireball.Animations.Add(anim);
             fireball.Animations.Add(anim2);

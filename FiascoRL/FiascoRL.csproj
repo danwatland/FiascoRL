@@ -39,6 +39,7 @@
     <Compile Include="Combat\Skills\AbstractSkill.cs" />
     <Compile Include="Combat\Skills\Spell.cs" />
     <Compile Include="Display\Animation\Animation.cs" />
+    <Compile Include="Display\Animation\AnimationExtensions.cs" />
     <Compile Include="Display\Animation\Frame.cs" />
     <Compile Include="Display\Animation\StaticAnimations.cs" />
     <Compile Include="Display\Animation\TextAnimation.cs" />
@@ -98,15 +99,6 @@
     <Compile Include="World\Tile.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="OpenTK">
-      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\OpenTK.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoGame.Framework">
-      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\MonoGame.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Tao.Sdl">
-      <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\Tao.Sdl.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>

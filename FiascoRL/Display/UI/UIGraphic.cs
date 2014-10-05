@@ -10,41 +10,6 @@ namespace FiascoRL.Display.UI
 {
     public static class UIGraphic
     {
-        public static Texture2D button_blue { get; private set; }
-        public static Texture2D button_blue_highlighted { get; private set; }
-        public static Texture2D button_blue_pressed { get; private set; }
-        public static Texture2D button_green { get; private set; }
-        public static Texture2D button_green_highlighted { get; private set; }
-        public static Texture2D button_green_pressed { get; private set; }
-        public static Texture2D button_red { get; private set; }
-        public static Texture2D button_red_highlighted { get; private set; }
-        public static Texture2D button_red_pressed { get; private set; }
-        public static Texture2D frame_bottom { get; private set; }
-        public static Texture2D frame_bottomleft { get; private set; }
-        public static Texture2D frame_bottomright { get; private set; }
-        public static Texture2D frame_labelleft { get; private set; }
-        public static Texture2D frame_labelmiddle { get; private set; }
-        public static Texture2D frame_labelright { get; private set; }
-        public static Texture2D frame_labelrightclosebutton { get; private set; }
-        public static Texture2D frame_left { get; private set; }
-        public static Texture2D frame_middle { get; private set; }
-        public static Texture2D frame_right { get; private set; }
-        public static Texture2D frame_top { get; private set; }
-        public static Texture2D frame_topleft { get; private set; }
-        public static Texture2D frame_topright { get; private set; }
-        public static Texture2D grid_topleft { get; private set; }
-        public static Texture2D grid_topmiddle { get; private set; }
-        public static Texture2D grid_topright { get; private set; }
-        public static Texture2D icon_amulet { get; private set; }
-        public static Texture2D icon_armor { get; private set; }
-        public static Texture2D icon_belt { get; private set; }
-        public static Texture2D icon_boots { get; private set; }
-        public static Texture2D icon_helmet { get; private set; }
-        public static Texture2D icon_ring { get; private set; }
-        public static Texture2D icon_shield { get; private set; }
-        public static Texture2D icon_weapon { get; private set; }
-        public static Texture2D panel_single { get; private set; }
-
         public static SpriteFont FiascoFont { get; private set; }
         public static SpriteFont FiascoFontSmall { get; private set; }
 

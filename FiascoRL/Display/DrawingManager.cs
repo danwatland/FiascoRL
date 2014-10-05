@@ -79,10 +79,7 @@ namespace FiascoRL.Display
             Session.Player.CurrentLevel.ActorList.Where(x => x.GetType() == typeof(Item))
                 .Where(x => Session.Player.CurrentLevel.TileMap[x.Coords.X, x.Coords.Y].TurnSeen == Session.Player.CurrentTurn)
                 .ToList()
-                .ForEach(x =>
-                {
-                    Session.SpriteBatch.Draw(x.Texture, new Rectangle(x.Coords.X * 24 + 4, x.Coords.Y * 24 + 4, 16, 16), SpriteGraphic.GetSprite(x.Texture, x.GraphicIndex), Color.White);
-                });
+                .ForEach(x => Session.SpriteBatch.Draw(x.Texture, new Rectangle(x.Coords.X * 24 + 4, x.Coords.Y * 24 + 4, 16, 16), SpriteGraphic.GetSprite(x.Texture, x.GraphicIndex), Color.White));
             Session.SpriteBatch.End();
         }
 
@@ -119,10 +116,6 @@ namespace FiascoRL.Display
 
             foreach (Display.Animation.Animation a in Session.Animations)
             {
-                //if (a.Texture == SpriteGraphic.Effects32)
-                //{
-                //    Session.SpriteBatch.Draw(a.Texture, new Rectangle(a.Coords.X * 24 + a.Offset.X, a.Coords.Y * 24 + a.Offset.Y, 32, 32), SpriteGraphic.GetSprite(a.Texture, a.GraphicIndex), a.CurrentColor);
-                //} else
                 Session.SpriteBatch.Draw(a.Texture, new Rectangle(a.Coords.X * 24 + a.Offset.X, a.Coords.Y * 24 + a.Offset.Y, 24, 24), SpriteGraphic.GetSprite(a.Texture, a.GraphicIndex), a.CurrentColor);
             }
             foreach (TextAnimation a in Session.TextAnimations)
@@ -140,10 +133,7 @@ namespace FiascoRL.Display
             Session.Player.CurrentLevel.ActorList.Where(x => x.GetType() == typeof(Creature))
                 .Cast<Creature>()
                 .ToList()
-                .ForEach(x =>
-                {
-                    SpriteGraphic.DrawHealthBar(Session.SpriteBatch, game, x);
-                });
+                .ForEach(x => SpriteGraphic.DrawHealthBar(Session.SpriteBatch, game, x));
 
             Session.SpriteBatch.End();
         }

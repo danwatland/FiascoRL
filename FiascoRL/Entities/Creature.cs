@@ -145,17 +145,19 @@ namespace FiascoRL.Entities
         /// <returns>This creature's damage animation.</returns>
         public Animation DamageAnimation()
         {
-            Animation anim = new Animation(this)
+            var anim = new Animation(this, 8)
             {
                 FrameLength = 0.04f,
                 Texture = SpriteGraphic.Creatures,
                 Offset = new Point(0, -2),
             };
+            anim.SetColors(Color.Red);
+            anim.AddLinearFade();
 
-            for (int i = 0; i < 8; i++)
-            {
-                anim.Colors.Add(new Microsoft.Xna.Framework.Color(1.0f, 0.0f, 0.0f, (float)(1.0 - 0.125 * i)));
-            }
+//            for (int i = 0; i < 8; i++)
+//            {
+//                anim.Colors.Add(new Microsoft.Xna.Framework.Color(1.0f, 0.0f, 0.0f, (float)(1.0 - 0.125 * i)));
+//            }
 
             return anim;
         }

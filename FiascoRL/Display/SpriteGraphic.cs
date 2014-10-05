@@ -14,15 +14,10 @@ namespace FiascoRL.Display
     public static class SpriteGraphic
     {
         public static Texture2D Icons { get; private set; }
-
         public static Texture2D Effects24 { get; private set; }
-
         public static Texture2D Effects32 { get; private set; }
-
         public static Texture2D Items { get; private set; }
-
         public static Texture2D World { get; private set; }
-
         public static Texture2D Creatures { get; private set; }
 
         /// <summary>
@@ -66,7 +61,7 @@ namespace FiascoRL.Display
         /// <param name="c"></param>
         public static void DrawHealthBar(SpriteBatch spriteBatch, FiascoGame game, Creature c)
         {
-            Texture2D texture = new Texture2D(game.GraphicsDevice, 1, 1);
+            var texture = new Texture2D(game.GraphicsDevice, 1, 1);
             texture.SetData(new Color[] { Color.White });
 
             if (c.HP.Current < c.HP.Max)
