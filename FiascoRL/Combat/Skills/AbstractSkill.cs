@@ -31,25 +31,18 @@ namespace FiascoRL.Combat.Skills
         /// <summary>
         /// Animations displayed when this action is performed.
         /// </summary>
-        public List<Animation> Animations
-        {
-            get
-            {
-                if (_animations == null)
-                {
-                    _animations = new List<Animation>();
-                }
+        public List<Animation> Animations { get; set; }
 
-                return _animations;
-            }
-            set
-            {
-                _animations = value;
-            }
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public Point TargetCoords { get; set; }
 
+        /// <summary>
+        /// Implementation of the skill.
+        /// </summary>
+        protected Action<Creature, Creature> Skill { get; set; }
+        
         /// <summary>
         /// Performs this skill.
         /// </summary>
@@ -71,12 +64,9 @@ namespace FiascoRL.Combat.Skills
 
         protected abstract void PerformSkill(Creature performer, Creature recipient);
 
-        protected Creature Performer { get; set; }
-        protected Creature Recipient { get; set; }
-
         public virtual void Update(GameTime gameTime)
         {
-            foreach (Animation animation in Animations)
+            foreach (var animation in Animations)
             {
                 animation.Update(gameTime);
             }
@@ -86,7 +76,7 @@ namespace FiascoRL.Combat.Skills
         {
             Session.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, null, transformation);
 
-            foreach (Animation animation in Animations) 
+            foreach (var animation in Animations) 
             {
                 Session.SpriteBatch.Draw(animation.Texture,
                     new Rectangle((animation.Coords.X) * 24 + animation.Offset.X,

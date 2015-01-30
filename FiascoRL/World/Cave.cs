@@ -27,7 +27,18 @@ namespace FiascoRL.World
             {
                 if (Rand.NextDouble() > tolerance) // Floor
                 {
+<<<<<<< HEAD
                     return new Tile(FloorA + TilesetColumns * LevelType, true);
+=======
+                    if (Rand.NextDouble() > tolerance) // Floor
+                    {
+                        TileMap[x, y] = new Tile(Floor + TilesetColumns * LevelType, true);
+                    }
+                    else // Wall
+                    {
+                        TileMap[x, y] = new Tile(Wall + TilesetColumns * LevelType, false);
+                    }
+>>>>>>> 398a9f4b887c7c5007821b588e5fe0991f4a58bd
                 }
                 else // Wall
                 {
@@ -61,14 +72,14 @@ namespace FiascoRL.World
                     {
                         int n = NumberOfNeighbors(x, y);
 
-                        if (n >= 6 && TileMap[x, y].GraphicIndex == FloorA + TilesetColumns * LevelType)
+                        if (n >= 6 && TileMap[x, y].GraphicIndex == Floor + TilesetColumns * LevelType)
                         {
                             TileMap[x, y] = new Tile(Wall + TilesetColumns * LevelType, false);
                             count++;
                         }
                         else if (n < 3 && TileMap[x, y].GraphicIndex == Wall + TilesetColumns * LevelType)
                         {
-                            TileMap[x, y] = new Tile(FloorA + TilesetColumns * LevelType, true);
+                            TileMap[x, y] = new Tile(Floor + TilesetColumns * LevelType, true);
                             count++;
                         }
                     }
@@ -91,20 +102,20 @@ namespace FiascoRL.World
             {
                 for (int y = 1; y < Height - 1; y++)
                 {
-                    if (TileMap[x, y].GraphicIndex == FloorA + TilesetColumns * this.LevelType)
+                    if (TileMap[x, y].GraphicIndex == Floor + TilesetColumns * this.LevelType)
                     {
                         double r = Rand.NextDouble();
                         if (r < 0.03)
                         {
-                            TileMap[x, y].GraphicIndex = FloorA + TilesetColumns * this.LevelType + 1;
+                            TileMap[x, y].GraphicIndex = Floor + TilesetColumns * this.LevelType + 1;
                         }
                         else if (r >= 0.03 && r < 0.05)
                         {
-                            TileMap[x, y].GraphicIndex = FloorA + TilesetColumns * this.LevelType + 2;
+                            TileMap[x, y].GraphicIndex = Floor + TilesetColumns * this.LevelType + 2;
                         }
                         else if (r >= 0.05 && r < 0.1)
                         {
-                            TileMap[x, y].GraphicIndex = FloorA + TilesetColumns * this.LevelType + 3;
+                            TileMap[x, y].GraphicIndex = Floor + TilesetColumns * this.LevelType + 3;
                         }
                     }
                 }
@@ -118,7 +129,7 @@ namespace FiascoRL.World
                 for (int y = 1; y < Height - 1; y++)
                 {
                     double r = Rand.NextDouble();
-                    if (TileMap[x, y].GraphicIndex == FloorA + TilesetColumns * LevelType && DecorationMap[x, y] == null && r < 0.05)
+                    if (TileMap[x, y].GraphicIndex == Floor + TilesetColumns * LevelType && DecorationMap[x, y] == null && r < 0.05)
                     {
                         DecorationMap[x, y] = new Tile(31 + Rand.Next(7), true);
                     }

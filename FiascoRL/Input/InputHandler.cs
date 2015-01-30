@@ -20,7 +20,7 @@ namespace FiascoRL.Input
     public static class InputHandler
     {
         private static float _elapsedTime;
-        private static readonly float _inputInterval = 0.165f;
+        private const float InputInterval = 0.165f;
         private static bool _keyPressed;
         private static bool _targeting;
 
@@ -38,7 +38,7 @@ namespace FiascoRL.Input
                 _keyPressed = false;
             }
 
-            if (_elapsedTime >= _inputInterval || _keyPressed == false)
+            if (_elapsedTime >= InputInterval || _keyPressed == false)
             {
                 Point delta = new Point(0, 0);
 
