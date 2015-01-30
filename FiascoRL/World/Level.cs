@@ -149,23 +149,39 @@ namespace FiascoRL.World
         /// </summary>
         /// <param name="x">X-coordinate of tile.</param>
         /// <param name="y">Y-coordinate of tile.</param>
+        /// <param name="includeDiags">Whether to include diagonals.</param>
         /// <returns></returns>
-        protected int NumberOfNeighbors(int x, int y)
+        protected int NumberOfNeighbors(int x, int y, bool includeDiags = true)
         {
-            int[] xArr = { x - 1, x, x + 1, x + 1, x + 1, x, x - 1, x - 1 };
-            int[] yArr = { y - 1, y - 1, y - 1, y, y + 1, y + 1, y + 1, y };
+            var points = GetAdjacentTiles(x, y, includeDiags);
 
             int count = 0;
-            for (int i = 0; i < xArr.Length; i++)
+            foreach (var p in points)
             {
-                if (xArr[i] >= 0 && xArr[i] < this.Width && yArr[i] >= 0 && yArr[i] < this.Height)
+                if (p.X >= 0 && p.X < this.Width && p.Y >= 0 && p.Y < this.Height)
                 {
-                    if (TileMap[xArr[i], yArr[i]].Traversable == false)
+                    if (TileMap[p.X, p.Y].Traversable == false)
                         count++;
                 }
             }
-
             return count;
+        }
+
+        /// <summary>
+        /// Returns a random open adjacent tile, or the point (0, 0) if none exist.
+        /// </summary>
+        /// <param name="x">X-coordinate of tile.</param>
+        /// <param name="y">Y-coordinate of tile.</param>
+        /// <param name="includeDiags">Whether to include diagonals.</param>
+        /// <returns></returns>
+        protected Point GetRandomOpenAdjacentTile(int x, int y, bool includeDiags = true)
+        {
+            var points = GetAdjacentTiles(x, y, includeDiags);
+            var openPoints = points.Where(p => TileMap[p.X, p.Y].Traversable == true).ToList();
+            if (openPoints.Count() == 0)
+                return Point.Zero;
+            else
+                return openPoints[Rand.Next(openPoints.Count)];
         }
 
         /// <summary>
@@ -467,6 +483,29 @@ namespace FiascoRL.World
             }
 
             return _accessibleArea;
+        }
+
+        private List<Point> GetAdjacentTiles(int x, int y, bool includeDiags)
+        {
+            int[] xArr;
+            int[] yArr;
+            if (includeDiags)
+            {
+                xArr = new int[] { x - 1, x, x + 1, x + 1, x + 1, x, x - 1, x - 1 };
+                yArr = new int[] { y - 1, y - 1, y - 1, y, y + 1, y + 1, y + 1, y };
+            }
+            else
+            {
+                xArr = new int[] { x - 1, x - 1, x + 1, x + 1 };
+                yArr = new int[] { y - 1, y + 1, y - 1, y + 1 };
+            }
+
+            var pointList = new List<Point>();
+            for (int i = 0; i < xArr.Length; i++)
+            {
+                pointList.Add(new Point(xArr[i], yArr[i]));
+            }
+            return pointList;
         }
         #endregion
     }

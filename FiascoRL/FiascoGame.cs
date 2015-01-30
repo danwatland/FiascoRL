@@ -109,7 +109,7 @@ namespace FiascoRL
             Session.UIManager.Controls.Add(minimapControl);
             Session.UIManager.Controls.Add(inventoryControl);
             Session.UIManager.Controls.Add(powerBarControl);
-            Session.UIManager.Controls.Add(characterSelectControl);
+            //Session.UIManager.Controls.Add(characterSelectControl);
         }
 
         /// <summary>

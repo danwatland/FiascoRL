@@ -1,4 +1,5 @@
 ﻿using FiascoRL.Display.UI.Controls;
+using FiascoRL.World;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,15 @@ namespace FiascoRL.Etc.ExtensionMethods
             return result.First();
         }
 
+        public static void PerformAction(this Tile[,] tileMap, Func<Tile, Tile> func)
+        {
+            for (int x = 0; x < tileMap.GetLength(0); x++)
+            {
+                for (int y = 0; y < tileMap.GetLength(1); y++)
+                {
+                    tileMap[x, y] = func(tileMap[x, y]);
+                }
+            }
+        }
     }
 }

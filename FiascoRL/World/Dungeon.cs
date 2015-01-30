@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FiascoRL.Etc.ExtensionMethods;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,28 +13,40 @@ namespace FiascoRL.World
             : base(width, height)
         {
             this.LevelType = (int)LevelTypes.StructureGray;
-            this._rand = new Random();
+            this._rand = new Random(1);
             this.Rooms = new List<Room>();
         }
 
+        public double Density { get; set; }
+
         public override void GenerateLevel()
         {
-            throw new NotImplementedException();
+            TileMap.PerformAction(f => f = new Tile(FloorA, true));
+
+            // Create rooms...
+            Density = 0.50;
+            int numberOfRooms = GetMaxNumberOfRooms();
+            while (Rooms.Count < numberOfRooms)
+            {
+                PlaceRandomRoom();
+            }
+
+            foreach (var room in Rooms)
+            {
+                CreateRoomTiles(room);
+            }
+
+            EncloseLevel();
         }
 
         private Random _rand;
         private List<Room> Rooms;
 
         #region Room methods
-        private List<Point> GetAvailableEdges()
+        private bool DoRoomsIntersect(Room r1, Room r2)
         {
-            List<Point> edges = new List<Point>();
-            Rooms.ForEach(x =>
-            {
-                edges.AddRange(x.GetEdges());
-            });
-
-            return edges.Distinct().ToList();
+            return r1.Coords.Left <= r2.Coords.Right && r1.Coords.Right >= r2.Coords.Left &&
+                   r1.Coords.Top <= r2.Coords.Bottom && r1.Coords.Bottom >= r2.Coords.Top;
         }
 
         private Room GetRandomPassageway()
@@ -68,12 +81,49 @@ namespace FiascoRL.World
             return new Room(rect);
         }
 
+        private bool PlaceRandomRoom()
+        {
+            var proposedRoom = GetRandomRoom();
+            foreach (var existingRoom in Rooms)
+            {
+                if (DoRoomsIntersect(existingRoom, proposedRoom))
+                    return false;
+            }
+            Rooms.Add(proposedRoom);
+            return true;
+        }
+
+        private void CreateRoomTiles(Room room)
+        {
+            for (int x = room.Coords.Left; x <= room.Coords.Right; x++)
+            {
+                for (int y = room.Coords.Top; y <= room.Coords.Bottom; y++)
+                {
+                    if (TileMap[x, y] == null)
+                    {
+                        TileMap[x, y] = new Tile(FloorA, true);
+                    }
+                    else
+                    {
+                        TileMap[x, y].GraphicIndex = FloorA;
+                        TileMap[x, y].Traversable = true;
+                    }
+                }
+            }
+
+            var edges = room.GetEdges();
+            foreach (var point in edges)
+            {
+                TileMap[point.X, point.Y].GraphicIndex = Wall;
+            }
+        }
+
         struct Room
         {
             public Rectangle Coords { get { return _coords; } }
             private Rectangle _coords;
             public const int MAX_LENGTH = 11;
-            public const int MIN_LENGTH = 5;
+            public const int MIN_LENGTH = 6;
 
             public Room(Rectangle rect)
             {
@@ -97,6 +147,16 @@ namespace FiascoRL.World
 
                 return edges;
             }
+        }
+        #endregion
+
+        #region Helper methods
+        private int GetMaxNumberOfRooms()
+        {
+            int levelTiles = Height * Width;
+            double roomTiles = Math.Pow(((double)Room.MAX_LENGTH + Room.MIN_LENGTH) / 2, 2);
+            int numRooms = (int)(levelTiles * Density / roomTiles);
+            return numRooms;
         }
         #endregion
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FiascoRL.Etc.ExtensionMethods;
 using FiascoRL.World;
 using FiascoRL.Display;
 using Microsoft.Xna.Framework;
@@ -22,20 +23,31 @@ namespace FiascoRL.World
             // For best results, use a value close to 0.5.
             float tolerance = 0.49f;
 
-            for (int x = 0; x < this.Width; x++)
+            TileMap.PerformAction(t =>
             {
-                for (int y = 0; y < this.Height; y++)
+                if (Rand.NextDouble() > tolerance) // Floor
                 {
-                    if (Rand.NextDouble() > tolerance) // Floor
-                    {
-                        TileMap[x, y] = new Tile(FloorA + TilesetColumns * LevelType, true);
-                    }
-                    else // Wall
-                    {
-                        TileMap[x, y] = new Tile(Wall + TilesetColumns * LevelType, false);
-                    }
+                    return new Tile(FloorA + TilesetColumns * LevelType, true);
                 }
-            }
+                else // Wall
+                {
+                    return new Tile(Wall + TilesetColumns * LevelType, false);
+                }
+            });
+            //for (int x = 0; x < this.Width; x++)
+            //{
+            //    for (int y = 0; y < this.Height; y++)
+            //    {
+            //        if (Rand.NextDouble() > tolerance) // Floor
+            //        {
+            //            TileMap[x, y] = new Tile(FloorA + TilesetColumns * LevelType, true);
+            //        }
+            //        else // Wall
+            //        {
+            //            TileMap[x, y] = new Tile(Wall + TilesetColumns * LevelType, false);
+            //        }
+            //    }
+            //}
 
             // Utilize celluar automata rule B678/S345678 to generate a natural cave looking layout.
             int count = 1;
