@@ -27,38 +27,13 @@ namespace FiascoRL.World
             {
                 if (Rand.NextDouble() > tolerance) // Floor
                 {
-<<<<<<< HEAD
-                    return new Tile(FloorA + TilesetColumns * LevelType, true);
-=======
-                    if (Rand.NextDouble() > tolerance) // Floor
-                    {
-                        TileMap[x, y] = new Tile(Floor + TilesetColumns * LevelType, true);
-                    }
-                    else // Wall
-                    {
-                        TileMap[x, y] = new Tile(Wall + TilesetColumns * LevelType, false);
-                    }
->>>>>>> 398a9f4b887c7c5007821b588e5fe0991f4a58bd
+                    return new Tile(Floor + TilesetColumns * LevelType, true);
                 }
                 else // Wall
                 {
                     return new Tile(Wall + TilesetColumns * LevelType, false);
                 }
             });
-            //for (int x = 0; x < this.Width; x++)
-            //{
-            //    for (int y = 0; y < this.Height; y++)
-            //    {
-            //        if (Rand.NextDouble() > tolerance) // Floor
-            //        {
-            //            TileMap[x, y] = new Tile(FloorA + TilesetColumns * LevelType, true);
-            //        }
-            //        else // Wall
-            //        {
-            //            TileMap[x, y] = new Tile(Wall + TilesetColumns * LevelType, false);
-            //        }
-            //    }
-            //}
 
             // Utilize celluar automata rule B678/S345678 to generate a natural cave looking layout.
             int count = 1;

@@ -139,7 +139,6 @@ namespace FiascoRL.World
         {
             var points = GetAdjacentTiles(x, y, includeDiags);
 
-<<<<<<< HEAD
             int count = 0;
             foreach (var p in points)
             {
@@ -150,10 +149,6 @@ namespace FiascoRL.World
                 }
             }
             return count;
-=======
-            return xArr.Where((t, i) => t >= 0 && t < this.Width && yArr[i] >= 0 && 
-                   yArr[i] < this.Height && TileMap[t, yArr[i]].Traversable == false).Count();
->>>>>>> 398a9f4b887c7c5007821b588e5fe0991f4a58bd
         }
 
         /// <summary>

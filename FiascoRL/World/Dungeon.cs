@@ -1,4 +1,5 @@
 ﻿using FiascoRL.Etc.ExtensionMethods;
+using FiascoRL.Etc.WeightedRandom;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace FiascoRL.World
             : base(width, height)
         {
             this.LevelType = (int)LevelTypes.StructureGray;
-            this._rand = new Random(1);
+            this._rand = RandomGenerator.Rand;
             this.Rooms = new List<Room>();
         }
 
@@ -21,7 +22,7 @@ namespace FiascoRL.World
 
         public override void GenerateLevel()
         {
-            TileMap.PerformAction(f => f = new Tile(FloorA, true));
+            TileMap.PerformAction(f => f = new Tile(Wall, true));
 
             // Create rooms...
             Density = 0.50;
@@ -101,11 +102,11 @@ namespace FiascoRL.World
                 {
                     if (TileMap[x, y] == null)
                     {
-                        TileMap[x, y] = new Tile(FloorA, true);
+                        TileMap[x, y] = new Tile(Floor, true);
                     }
                     else
                     {
-                        TileMap[x, y].GraphicIndex = FloorA;
+                        TileMap[x, y].GraphicIndex = Floor;
                         TileMap[x, y].Traversable = true;
                     }
                 }

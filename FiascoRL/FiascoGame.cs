@@ -56,7 +56,7 @@ namespace FiascoRL
             UIGraphic.Initialize(this);
 
             // Load first level.
-            FirstLevel = new Cave(50, 50) { Depth = 1 };
+            FirstLevel = new Dungeon(50, 50) { Depth = 1 };
             FirstLevel.GenerateLevel();
 
             // TODO: Remove this.

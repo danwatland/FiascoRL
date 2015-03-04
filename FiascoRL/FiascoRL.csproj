@@ -35,6 +35,9 @@
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Combat\Skills\AbstractSkill.cs" />
     <Compile Include="Combat\Skills\Spell.cs" />

@@ -8,7 +8,7 @@ namespace FiascoRL.Etc.WeightedRandom
     /// <summary>
     /// Weighted random object generator.
     /// </summary>
-    class RandomGenerator
+    public class RandomGenerator
     {
         public static Random Rand;
 

@@ -28,6 +28,16 @@ namespace FiascoRL.World
         /// </summary>
         public float Distance;
 
+        /// <summary>
+        /// X-coordinate.
+        /// </summary>
+        public int X { get; set; }
+
+        /// <summary>
+        /// Y-coordinate.
+        /// </summary>
+        public int Y { get; set; }
+
         private long _turnSeen;
 
         /// <summary>
